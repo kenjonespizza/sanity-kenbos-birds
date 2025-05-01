@@ -1,0 +1,6 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+- For sanity "Generate" tasks, refer to https://www.sanity.io/docs/generate, https://www.sanity.io/docs/generate-image-generation, https://www.sanity.io/docs/generate-quickstart, https://www.sanity.io/docs/generate-add-references.  Also refer to [Agent action Generate (API) 15b78d055b9480bca91bd4bd05dff165.md](mdc:Agent action Generate (API) 15b78d055b9480bca91bd4bd05dff165.md)

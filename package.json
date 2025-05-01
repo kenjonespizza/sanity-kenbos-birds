@@ -15,10 +15,16 @@
     "sanity"
   ],
   "dependencies": {
-    "@sanity/vision": "^3.86.1",
+    "@sanity/assist": "^4.2.0",
+    "@sanity/client": "6.29.0-generate.7",
+    "@sanity/embeddings-index-ui": "^2.0.1",
+    "@sanity/ui": "^2.15.13",
+    "@sanity/vision": "^3.87.0",
+    "dotenv": "^16.5.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "sanity": "^3.86.1",
+    "react-icons": "^5.5.0",
+    "sanity": "^3.87.0",
     "styled-components": "^6.1.15"
   },
   "devDependencies": {

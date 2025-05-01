@@ -1,0 +1,10 @@
+{"_type":"bird","commonName":"Mourning Dove","scientificName":"Zenaida macroura","size":"Robin-sized","conservationStatus":"Least Concern","color":"Brown"}
+{"_type":"bird","commonName":"Northern Cardinal","scientificName":"Cardinalis cardinalis","size":"Robin-sized","conservationStatus":"Least Concern","color":"Red"}
+{"_type":"bird","commonName":"American Robin","scientificName":"Turdus migratorius","size":"Robin-sized","conservationStatus":"Least Concern","color":"Red"}
+{"_type":"bird","commonName":"American Crow","scientificName":"Corvus brachyrhynchos","size":"Crow-sized","conservationStatus":"Least Concern","color":"Black"}
+{"_type":"bird","commonName":"Blue Jay","scientificName":"Cyanocitta cristata","size":"Robin-sized","conservationStatus":"Least Concern","color":"Blue"}
+{"_type":"bird","commonName":"Song Sparrow","scientificName":"Melospiza melodia","size":"Sparrow-sized or smaller","conservationStatus":"Least Concern","color":"Brown"}
+{"_type":"bird","commonName":"Red-winged Blackbird","scientificName":"Agelaius phoeniceus","size":"Robin-sized","conservationStatus":"Least Concern","color":"Black"}
+{"_type":"bird","commonName":"European Starling","scientificName":"Sturnus vulgaris","size":"Robin-sized","conservationStatus":"Least Concern","color":"Black"}
+{"_type":"bird","commonName":"American Goldfinch","scientificName":"Spinus tristis","size":"Sparrow-sized or smaller","conservationStatus":"Least Concern","color":"Yellow"}
+{"_type":"bird","commonName":"House Finch","scientificName":"Haemorhous mexicanus","size":"Sparrow-sized or smaller","conservationStatus":"Least Concern","color":"Red"}
