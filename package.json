@@ -16,21 +16,21 @@
   ],
   "dependencies": {
     "@sanity/assist": "^4.2.0",
-    "@sanity/client": "6.29.0-generate.7",
-    "@sanity/embeddings-index-ui": "^2.0.1",
-    "@sanity/ui": "^2.15.13",
-    "@sanity/vision": "^3.87.0",
+    "@sanity/client": "^7.2.1",
+    "@sanity/embeddings-index-ui": "^2.1.0",
+    "@sanity/ui": "^2.15.17",
+    "@sanity/vision": "^3.88.3",
     "dotenv": "^16.5.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.5.0",
-    "sanity": "^3.87.0",
-    "styled-components": "^6.1.15"
+    "sanity": "^3.88.3",
+    "styled-components": "^6.1.18"
   },
   "devDependencies": {
     "@sanity/eslint-config-studio": "^5.0.2",
-    "@types/react": "^18.0.25",
-    "eslint": "^9.9.0",
+    "@types/react": "^18.3.21",
+    "eslint": "^9.26.0",
     "prettier": "^3.0.2",
     "typescript": "^5.1.6"
   },

@@ -2,7 +2,7 @@ import {defineConfig} from 'sanity'
 import {structureTool} from 'sanity/structure'
 import {visionTool} from '@sanity/vision'
 import {schemaTypes} from './schemaTypes'
-import {DoneBirdingAction} from './src/DoneBirdingAction'
+import {CompleteChecklistAction} from './src/documentActions/CompleteChecklist'
 import {embeddingsIndexDashboard} from '@sanity/embeddings-index-ui'
 import {assist} from '@sanity/assist'
 
@@ -18,7 +18,7 @@ export default defineConfig({
   document: {
     actions: (prev, context) => {
       if (context.schemaType === 'checklist') {
-        return [DoneBirdingAction, ...prev]
+        return [CompleteChecklistAction, ...prev]
       }
       return prev
     },
