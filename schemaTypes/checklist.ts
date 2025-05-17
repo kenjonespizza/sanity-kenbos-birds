@@ -15,7 +15,30 @@ export default defineType({
       name: 'location',
       title: 'Location',
       type: 'string',
-      validation: (Rule) => Rule.required(),
+    },
+    {
+      name: 'city',
+      title: 'City',
+      type: 'string',
+      readOnly: () => true,
+    },
+    {
+      name: 'state',
+      title: 'State',
+      type: 'string',
+      readOnly: () => true,
+    },
+    {
+      name: 'country',
+      title: 'Country',
+      type: 'string',
+      readOnly: () => true,
+    },
+    {
+      name: 'geopoint',
+      title: 'Location (Map)',
+      type: 'geopoint',
+      description: 'Select the location on a map',
     },
     {
       name: 'notes',

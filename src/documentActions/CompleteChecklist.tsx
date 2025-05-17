@@ -68,27 +68,6 @@ export const CompleteChecklistAction = (props: DocumentActionProps) => {
     }
   }
 
-  // Generate blog post from checklist
-  const generateBlogPost = async (checklistId: string) => {
-    await client.agent.action.generate({
-      targetDocument: {operation: 'create', _type: 'blogPost'},
-      instruction: `
-        - Write a blog post based on all the info from this checklist: $thisChecklist.
-        - Make sure the blog post is very detailed about the birds seen and the location and date of the checklist.
-        - Anywhere a bird is mentioned make it bold.
-        - for the 'image' field, create an epic action packed anime Dragonball Z style image in the location of $thisChecklist featuring all the birds seen and each bird must have a text label of its common name.  All the birds must be battling each other.  Add me, Ken Jones, to the image. I am a bald goofy looking 30-something year old black adult male.  If $thisChecklist doesn't describe what Im wearing then have me wearing a black shirt that says "Sanity.io" and orange shorts, a backwards hat and binoculars.  If $thisChecklist has a location, use that location for the image.  Otherwise, use the location of the nearest city.  Please add text for Ken's Birding Checklist and the location name and the date (month day, year) of the checklist.  This information about the image must not be used in the blog post body.  If there are details from the $thisChecklist notes about the weather or scenery you must use theme in the image.
-        - In the checklist field, reference the $thisChecklist document.`,
-      instructionParams: {
-        thisChecklist: {
-          type: 'groq',
-          query: `*[_id == $id][0]{location, date, notes, birdsSeen}`,
-          params: {id: checklistId},
-        },
-      },
-      schemaId: SCHEMA_ID,
-    })
-  }
-
   // Process the birding checklist
   const handleProcessing = async () => {
     try {
@@ -96,31 +75,31 @@ export const CompleteChecklistAction = (props: DocumentActionProps) => {
       const gatherBirdsFromNotes = await client.agent.action.generate({
         documentId: props.id,
         instruction: `
-          Gather all the bird species mentioned in this $thisChecklist notes field.
-          Check the name of the bird is a proper "common name" and if so return it.
-          If not, return the most likely common name.
-          Return only an array of the bird's common names.`,
+          - Gather all the bird species mentioned in this $thisChecklist.notes field.
+          - Add the list of birds to the $thisChecklist.birdsSeenSeed field.
+          - Using the $thisChecklist.geopoint field, populate the city, state, and country fields.`,
         conditionalPaths: {
           // Needed to access a hidden field
           defaultHidden: false,
+          defaultReadOnly: false,
         },
-        noWrite: true,
+        // noWrite: true,
         instructionParams: {
           thisChecklist: {
             type: 'groq',
-            query: `*[_id == $id][0]{notes}`,
+            query: `*[_id == $id][0]{notes, geopoint}`,
             params: {id: props.id},
           },
         },
-        target: {
-          // Returning the birds names as an array of strings to 'birdsSeenSeed'.
-          include: [
-            {
-              path: 'birdsSeenSeed',
-              operation: 'set',
-            },
-          ],
-        },
+
+        target: [
+          {path: ['city']},
+          {path: ['state']},
+          {path: ['country']},
+          {path: ['birdsSeenSeed']},
+          {include: ['geopoint']},
+          {include: ['notes']},
+        ],
         schemaId: SCHEMA_ID,
       })
 
@@ -173,6 +152,31 @@ export const CompleteChecklistAction = (props: DocumentActionProps) => {
       setIsProcessing(false)
       props.onComplete()
     }
+  }
+
+  // Generate blog post from checklist
+  const generateBlogPost = async (checklistId: string) => {
+    await client.agent.action.generate({
+      targetDocument: {operation: 'create', _type: 'blogPost'},
+      instruction: `
+        - Write a blog post in english based on all the info from this checklist: $thisChecklist.
+        - Make sure the blog post is very detailed about the birds seen and the location, city, state, and country of the checklist.
+        - Anywhere a bird is mentioned make it bold.
+        - The languageOfLocation field should be set to the main language spoken in the location, based on $thisChecklist.city, $thisChecklist.state, and $thisChecklist.country.
+        - The languageOfLocationCode field should be set to the IETF BCP 47 language tag format of the languageOfLocation field.
+        - The language field should be set to English.
+        - The languageCode field should be set to en-US.
+        - for the 'image' field, create an epic action packed anime Dragonball Z style image in the location of $thisChecklist featuring all the birds seen and each bird must have a text label of its common name.  All the birds must be battling each other.  Add me, Ken Jones, to the image. I am a bald goofy looking 30-something year old black adult male.  If $thisChecklist doesn't describe what Im wearing then have me wearing a black shirt that says "Sanity.io" and orange shorts, a backwards hat and binoculars.  If $thisChecklist has a location, use that location for the image.  Otherwise, use the location, city, state, and country of the nearest city.  Please add text for Ken's Birding Checklist and the location name and the date (month day, year) of the checklist.  This information about the image must not be used in the blog post body.  If there are details from the $thisChecklist notes about the weather or scenery you must use theme in the image. Add other details from the notes into the background of the image.
+        - In the checklist field, reference the $thisChecklist document.`,
+      instructionParams: {
+        thisChecklist: {
+          type: 'groq',
+          query: `*[_id == $id][0]{location, date, notes, birdsSeen, state, country, city}`,
+          params: {id: checklistId},
+        },
+      },
+      schemaId: SCHEMA_ID,
+    })
   }
 
   // Return the document action configuration
