@@ -23,7 +23,7 @@ export default defineType({
                 title: 'Bird',
                 options: {
                   aiAssist: {
-                    embeddingsIndex: 'all-the-things',
+                    embeddingsIndex: 'Birds',
                   },
                 },
               },

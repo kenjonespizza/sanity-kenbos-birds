@@ -1,9 +1,37 @@
 import {defineType} from 'sanity'
 
+type AudienceType = 'casual' | 'kids' | 'scientific'
+
 export default defineType({
   name: 'blogPost',
   title: 'Blog Posts',
   type: 'document',
+  preview: {
+    select: {
+      title: 'title',
+      language: 'languageCode',
+      audience: 'audience',
+    },
+    prepare({
+      title,
+      language,
+      audience,
+    }: {
+      title: string
+      language: string
+      audience: AudienceType
+    }) {
+      const audienceMap: Record<AudienceType, string> = {
+        casual: 'Casual Birders',
+        kids: 'Kiddos',
+        scientific: 'Mature Scientists',
+      }
+      return {
+        title,
+        subtitle: `${language} • ${audienceMap[audience]}`,
+      }
+    },
+  },
   fields: [
     {
       name: 'parent',
@@ -28,29 +56,11 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     },
     {
-      name: 'languageOfLocation',
-      title: 'Language of Location',
-      type: 'string',
-    },
-    {
-      name: 'languageOfLocationCode',
-      title: 'Language of Location Code',
-      type: 'string',
-    },
-    {
-      name: 'language',
-      title: 'Language',
-      type: 'string',
-    },
-    {
       name: 'languageCode',
       title: 'Language Code',
       type: 'string',
-    },
-    {
-      name: 'publishedAt',
-      title: 'Published At',
-      type: 'datetime',
+      initialValue: 'en-US',
+      readOnly: () => true,
     },
     {
       name: 'audience',
@@ -88,12 +98,6 @@ export default defineType({
         },
       },
     },
-    {
-      name: 'profilePictureDescription',
-      title: 'Profile Picture Description',
-      type: 'text',
-    },
-
     {
       name: 'checklist',
       title: 'Checklist',

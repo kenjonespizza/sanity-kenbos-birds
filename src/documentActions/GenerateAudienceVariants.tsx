@@ -12,7 +12,6 @@ if (!SCHEMA_ID) {
 const apiVersion = process.env.SANITY_STUDIO_API_VERSION || 'vX'
 
 export const GenerateAudienceVariantsAction = (props: DocumentActionProps) => {
-  // console.log('props:', props)
   const [isProcessing, setIsProcessing] = useState(false)
   const [isPublishing, setIsPublishing] = useState(false)
   const client = useClient({
@@ -64,10 +63,8 @@ export const GenerateAudienceVariantsAction = (props: DocumentActionProps) => {
 
       // Get the appropriate document ID based on draft/published state
       const documentId = props.id
-      console.log('documentId:', documentId)
 
       const imageInstruction = originalDoc?.image?.instruction
-      console.log('imageInstruction:', imageInstruction)
 
       // Generate kids variant
       // Remove image.asset from originalDoc to avoid duplicate references
@@ -114,52 +111,27 @@ export const GenerateAudienceVariantsAction = (props: DocumentActionProps) => {
         schemaId: SCHEMA_ID,
         documentId: kidsDoc._id,
         instruction: `
-          Transform both the title, body, and image prompt into a simplified version for first graders learning about birds and birding.
-          - Use simple, clear language that a first grader can understand
-          - Explain any technical terms in kid-friendly ways
-          - Keep the excitement and wonder of bird watching
-          - Include fun facts about the birds mentioned
+          Transform the title, body, and image prompt into a simplified version for first graders learning about birds and birding.
           - Make it engaging and educational
-          - Keep the same overall structure and flow as the original
-          - Preserve any bird references and formatting
           - Make the title more engaging and kid-friendly
-          - generate a new image prompt.  Keep it similar to the original image prompt, but remove the epic Dragonball Z battle theme and make it look like a kid-friendly illustration.
-          - generate a new image
+          - generate a new image prompt.  Keep the same image prompt, but remove the epic Dragonball Z battle theme and make it look like a kid-friendly illustration.
           `,
       })
-
-      // Generate image for kids variant
-      // await client.agent.action.generate({
-      //   documentId: kidsDoc._id,
-      //   instruction: `Create a kid-friendly, colorful illustration featuring the birds mentioned in the content. The image should be playful and educational, perfect for first graders. Include fun elements that make bird watching exciting for children.`,
-      //   schemaId: SCHEMA_ID,
-      // })
 
       // Transform scientific variant
       await client.agent.action.transform({
         schemaId: SCHEMA_ID,
         documentId: scientificDoc._id,
         instruction: `
-          Transform both the title, body, and image prompt into a technical version for seasoned birders and scientists.
+          Transform the title, body, and image prompt into a technical version for a science birder.
           - Use precise scientific terminology
-          - Include detailed observations and measurements
-          - Reference scientific names of birds when mentioned
+          - add the scientific name of the birds in parenthesis after the common name
           - Add relevant scientific context about bird behavior and ecology
           - Maintain professional tone while being informative
-          - Keep the same overall structure and flow as the original
-          - Preserve any bird references and formatting
           - Make the title more technical and scientific
-          - generate a new image prompt.  Keep it similar to the original image prompt, but remove the epic Dragonball Z battle theme and make it look like a scientific illustration with a lot of detail and labels.
-          - generate a new image
+          - generate a new image prompt.  Keep the same to the original image prompt, but remove the epic Dragonball Z battle theme and make it look like a scientific illustration with a lot of detail and labels.
         `,
       })
-
-      // Generate image for scientific variant
-      // await client.agent.action.generate({
-      //   documentId: scientificDoc._id,
-      //   instruction: `Create a detailed, scientific illustration of the birds mentioned in the content. The image should be precise and accurate, showing key identifying features and scientific details that would be valuable for birders and scientists.`,
-      //   schemaId: SCHEMA_ID,
-      // })
 
       toast.push({
         status: 'success',

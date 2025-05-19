@@ -33,7 +33,7 @@ export default defineConfig({
         return [CompleteChecklistAction, ...prev]
       }
       if (context.schemaType === 'blogPost') {
-        return [TranslateAction, GenerateAudienceVariantsAction, ...prev]
+        return [GenerateAudienceVariantsAction, TranslateAction, ...prev]
       }
       return prev
     },
