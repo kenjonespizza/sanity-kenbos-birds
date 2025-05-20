@@ -58,8 +58,8 @@ export const TranslateAction = (props: DocumentActionProps) => {
   }
 
   if (
-    (props?.published?.language && props.published.language !== 'English') ||
-    (props?.draft?.language && props.draft.language !== 'English')
+    (props?.published?.languageCode && props.published.languageCode !== 'en-US') ||
+    (props?.draft?.languageCode && props.draft.languageCode !== 'en-US')
   ) {
     return null
   }
@@ -85,15 +85,15 @@ export const TranslateAction = (props: DocumentActionProps) => {
           documentId: documentId,
           targetDocument: {operation: 'create'},
           fromLanguage: {id: 'en-US', title: 'English'},
-          languageFieldPath: 'languageCode',
           toLanguage: {
             id: language.id,
             title: language.title,
           },
+          languageFieldPath: 'languageCode',
+
           styleGuide:
             'Translate the content while maintaining a natural, engaging tone. Preserve any technical bird-related terms and ensure they are accurately translated. Keep the same structure and formatting as the original.',
           conditionalPaths: {
-            defaultHidden: false,
             defaultReadOnly: false,
           },
         })

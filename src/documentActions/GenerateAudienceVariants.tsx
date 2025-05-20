@@ -71,6 +71,11 @@ export const GenerateAudienceVariantsAction = (props: DocumentActionProps) => {
       if (originalDoc.image?.asset) {
         delete originalDoc.image
       }
+
+      const imageInstructionKids = `generate a new image prompt.  Keep the same image prompt, but remove the epic Dragonball Z battle theme and make it look like a kid-friendly illustration.  Be sure to keep Ken Jones african american.`
+
+      const imageInstructionScientific = `generate a new image prompt.  Keep the same image prompt, but remove the epic Dragonball Z battle theme and make it look like a scientific illustration with a lot of detail and labels.`
+
       const kidsDoc = await client.create({
         ...originalDoc,
         _id: null,
@@ -111,10 +116,10 @@ export const GenerateAudienceVariantsAction = (props: DocumentActionProps) => {
         schemaId: SCHEMA_ID,
         documentId: kidsDoc._id,
         instruction: `
-          Transform the title, body, and image prompt into a simplified version for first graders learning about birds and birding.
+          Transform the title, body, and image prompt fields into a simplified version for first graders learning about birds and birding.
           - Make it engaging and educational
           - Make the title more engaging and kid-friendly
-          - generate a new image prompt.  Keep the same image prompt, but remove the epic Dragonball Z battle theme and make it look like a kid-friendly illustration.
+          - ${imageInstructionKids}
           `,
       })
 
@@ -123,13 +128,13 @@ export const GenerateAudienceVariantsAction = (props: DocumentActionProps) => {
         schemaId: SCHEMA_ID,
         documentId: scientificDoc._id,
         instruction: `
-          Transform the title, body, and image prompt into a technical version for a science birder.
+          Transform the title, body, and image prompt fields into a technical version for a science birder.
           - Use precise scientific terminology
           - add the scientific name of the birds in parenthesis after the common name
           - Add relevant scientific context about bird behavior and ecology
           - Maintain professional tone while being informative
           - Make the title more technical and scientific
-          - generate a new image prompt.  Keep the same to the original image prompt, but remove the epic Dragonball Z battle theme and make it look like a scientific illustration with a lot of detail and labels.
+          - ${imageInstructionScientific}
         `,
       })
 

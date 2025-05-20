@@ -37,13 +37,7 @@ export default defineType({
       description: 'Just jot down random thoughts about the birdcursion here.',
     },
     {
-      name: 'richtext',
-      title: 'Rich Text',
-      type: 'array',
-      of: [{type: 'block'}],
-    },
-    {
-      name: 'birdsSeenSeed',
+      name: 'birdsSeenHidden',
       title: 'Birds Seen',
       type: 'array',
       hidden: () => true, // Setting this to hidden with a function allows this to still be used with Sanity's AI

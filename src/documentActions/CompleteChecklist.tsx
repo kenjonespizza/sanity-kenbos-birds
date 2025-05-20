@@ -81,6 +81,30 @@ export const CompleteChecklistAction = (props: DocumentActionProps) => {
     handlePublishComplete()
   }, [props.draft])
 
+  // Extract birds from checklist notes
+  const extractBirdsFromNotes = async () => {
+    const gatherBirdsFromNotes = await client.agent.action.generate({
+      documentId: props.id,
+      instruction: `
+        - Gather all the names of bird species mentioned in this $thisChecklist.notes and add them to $thisChecklist.birdsSeenHidden.`,
+      conditionalPaths: {
+        defaultHidden: false,
+      },
+      instructionParams: {
+        thisChecklist: {
+          type: 'groq',
+          query: `*[_id == $id][0]{notes}`,
+          params: {id: props.id},
+        },
+      },
+      noWrite: true,
+      schemaId: SCHEMA_ID,
+    })
+
+    console.log('gatherBirdsFromNotes:', gatherBirdsFromNotes)
+    return gatherBirdsFromNotes?.birdsSeenHidden || []
+  }
+
   // Process individual bird
   const processBird = async (commonName: string): Promise<BirdReference> => {
     const birdId = commonName.toLowerCase().replace(/\s+/g, '-')
@@ -104,30 +128,6 @@ export const CompleteChecklistAction = (props: DocumentActionProps) => {
       _type: 'reference',
       _ref: birdId,
     }
-  }
-
-  // Extract birds from checklist notes
-  const extractBirdsFromNotes = async () => {
-    const gatherBirdsFromNotes = await client.agent.action.generate({
-      documentId: props.id,
-      instruction: `
-        - Gather all the bird species mentioned in this $thisChecklist.notes.
-        - Add the list of birds to the $thisChecklist.birdsSeenSeed field.`,
-      conditionalPaths: {
-        defaultHidden: false,
-      },
-      instructionParams: {
-        thisChecklist: {
-          type: 'groq',
-          query: `*[_id == $id][0]{notes}`,
-          params: {id: props.id},
-        },
-      },
-      noWrite: true,
-      schemaId: SCHEMA_ID,
-    })
-
-    return gatherBirdsFromNotes?.birdsSeenSeed || []
   }
 
   // Update checklist with bird references
@@ -164,9 +164,12 @@ export const CompleteChecklistAction = (props: DocumentActionProps) => {
         - Write a blog post in english based on all the info from this checklist: $thisChecklist.
         - Make sure the blog post is very detailed about the birds seen ($thisChecklist.birdsSeen) and the location of the checklist.
         - Anywhere a bird is mentioned make it bold.
-        - The languageCode field should be set to en-US.
+        - Set the languageCode field to "en-US".
         - In the checklist field, reference the $thisChecklist document.
         - ${imageInstruction}`,
+      conditionalPaths: {
+        defaultReadOnly: false,
+      },
       schemaId: SCHEMA_ID,
     })
   }

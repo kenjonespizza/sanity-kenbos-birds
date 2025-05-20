@@ -4,11 +4,12 @@ import {visionTool} from '@sanity/vision'
 import {schemaTypes} from './schemaTypes'
 import {CompleteChecklistAction} from './src/documentActions/CompleteChecklist'
 import {GenerateAudienceVariantsAction} from './src/documentActions/GenerateAudienceVariants'
-import {TranslateAction} from './src/documentActions/TranslateAction'
+import {TranslateAction} from './src/documentActions/Translate'
 import {embeddingsIndexDashboard} from '@sanity/embeddings-index-ui'
 import {assist} from '@sanity/assist'
 import {structure} from './src/structure'
 import {googleMapsInput} from '@sanity/google-maps-input'
+import {StudioWrapper} from './src/components/StudioWrapper'
 
 export default defineConfig({
   name: 'default',
@@ -41,5 +42,11 @@ export default defineConfig({
 
   schema: {
     types: schemaTypes,
+  },
+
+  studio: {
+    components: {
+      wrapper: StudioWrapper,
+    },
   },
 })
